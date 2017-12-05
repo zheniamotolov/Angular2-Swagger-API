@@ -1,0 +1,57 @@
+<nav class="navbar sticky-top navbar-toggleable-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <a class="navbar-brand" routerLink="/home">Tourism</a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <form class="form-inline mx-auto">
+      <div class="form-group">
+        <label class="city-select-label" for="cityChoice">You city: </label>
+        <select class="form-control form-control-sm city-select" id="cityChoice">
+          <option selected value="minsk">Minsk</option>
+          <option value="gomel">Gomel</option>
+          <option value="brest">Brest</option>
+          <option value="vitebsk">Vitebsk</option>
+          <option value="grodno">Grodno</option>
+          <option value="mogilev">Mogilev</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="btn-group mr-0" role="group">
+      <a routerLink="/favorites" class="btn btn-secondary">
+        <i class="fa fa-star" aria-hidden="true"></i>
+      </a>
+      <a class="btn btn-secondary">
+        <i class="fa fa-plane" aria-hidden="true"></i>
+      </a>
+      <div class="btn-group">
+        <button type="button"
+                class="btn btn-secondary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+          <i class="fa fa-user" aria-hidden="true"></i>
+        </button>
+
+        <div *ngIf="isAuthenticated" class="dropdown-menu user-dropdown-menu">
+          <a class="dropdown-item">Profile</a>
+          <a class="dropdown-item">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="onLogout()">Log out</a>
+        </div>
+
+        <div *ngIf="!isAuthenticated" class="dropdown-menu user-dropdown-menu">
+          <a class="dropdown-item" (click)="onLogin()">Log in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

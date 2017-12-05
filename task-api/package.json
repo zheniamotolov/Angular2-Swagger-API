@@ -1,0 +1,29 @@
+{
+  "name": "sample-api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "cors": "^2.8.3",
+    "dummy-json": "^2.0.0",
+    "express": "^4.15.3",
+    "jstoxml": "^0.2.4",
+    "object-to-xml": "^1.1.0",
+    "swagger-express-mw": "^0.1.0",
+    "swagger-js-codegen": "^1.10.0",
+    "swagger-node-runner": "^0.7.3",
+    "swagger-param-parser": "^1.0.3"
+  },
+  "devDependencies": {
+    "should": "^7.1.1",
+    "supertest": "^1.2.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}

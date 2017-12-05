@@ -1,0 +1,256 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Sample Api
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths
+basePath: /api/v1
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /squares:
+    # realisation of methods connected qwith url products situated in controller #get_products (products Service)
+    x-swagger-router-controller: squaresController
+    get:
+      #name of method (getProducts in controller get_products)
+      summary: Get Squares
+      operationId: getSquares
+      description: "Provide array of squares id"
+      parameters:
+        - $ref: '#/parameters/zoom'
+        - $ref: '#/parameters/latitude'
+        - $ref: '#/parameters/longitude'
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/squareId"
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+
+
+  /squares/{squareId}:
+    x-swagger-router-controller: squaresController
+    get:
+      summary: Gets array of objects sights
+      description: array of sights in current square
+      operationId: getMapSights
+      parameters:
+        - $ref: '#/parameters/squareId'
+      responses:
+        200:
+          description: array of sights in current square
+          schema:
+            $ref: '#/definitions/mapSights'
+        404:
+          description: The Sight does not exist
+  /sights:
+      #controller getProducts
+    x-swagger-router-controller: mediaSightsController
+    get:
+      summary: Gets array of sorted sights
+      description: array of sorted sights by poopularity
+      operationId: getMediaSights
+      parameters:
+        - $ref: '#/parameters/sightIds'
+        - $ref: '#/parameters/page'
+        - $ref: '#/parameters/authToken'
+      # - name: sightsIds
+      #   in: query
+      #   description: " sights ids"
+      #   required: false
+      #   schema:
+      #     type: array
+      #     items:
+      #         sightId:
+      #         #name: sightId
+      #         #in: query
+      #         description: the sight id
+      #       # required: false
+      #         type: string
+      #   collectionFormat: "multi"
+      responses:
+        200:
+          description: array
+          schema:
+            $ref: '#/definitions/mediaSights'
+        404:
+          description: The Sight does not exist
+  /sights/{sightId}:
+    x-swagger-router-controller: mediaSightsController
+    get:
+      summary: Gets array of objects sights
+      description: array of sights in current square
+      operationId: getMediaSightDescription
+      parameters:
+        - $ref: '#/parameters/sightId'
+        - $ref: '#/parameters/authToken'
+      responses:
+        200:
+          description: full description of sight
+          schema:
+            $ref: '#/definitions/sightDescription'
+        404:
+          description: The Sight does not exist
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:
+  squareId:
+    type: string
+    description: squareId
+  mapSight:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique id of a sight.
+      name:
+        type: string
+        description: Full name of sight.
+      photo:
+        type: string
+        description: Link to image sights.
+#      location:
+#        type: object
+#        description: Longitude and Latitude
+#        properties:
+      latitude:
+        type: number
+        format: double
+        description: Latitude number
+      longitude:
+        type: number
+        format: double
+        description: Longitude number
+  mapSights:
+    type: array
+    items:
+      $ref: '#/definitions/mapSight'
+  mediaSight:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique id of a sight.
+      name:
+        type: string
+        description: Full name of sight.
+      photo:
+        type: string
+        description: Link to image sights.
+      popularity:
+        type: integer
+        format: int32
+        description: popularity number
+      latitude:
+        type: number
+        format: double
+        description: Latitude number
+      longitude:
+        type: number
+        format: double
+        description: Longitude number
+  mediaSights:
+    type: array
+    items:
+      $ref: '#/definitions/mediaSight'
+
+  sightDescription:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique id of a sight.
+      description:
+        type: string
+        description: description
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+responses:
+  Standard500ErrorResponse:
+    description: An unexpected error occured.
+    schema:
+      $ref: '#/definitions/Error'
+
+
+parameters:
+  sightId:
+    name: sightId
+    in: path
+    description: sightId
+    required: true
+    type: string
+  sightIds:
+    name: sightIds
+    in: query
+    description: string of sightsids
+    required: false
+    type: string
+  page:
+    name: page
+    in: query
+    description: page number
+    required: false
+    type: string
+  authToken:
+    name: authToken
+    in: query
+    description: auth token
+    required: false
+    type: string
+  # sightIds:
+  #   type: array
+  #   items:
+  #     $ref: '#/parameters/sightId'
+  zoom:
+    name: zoom
+    in: query
+    description: The value that determines the scale of approximation.
+    required: false
+    type: integer
+    format: int32
+  latitude:
+    name: latitude
+    in: query
+    description: "Coordinate determining the position of the point on the surface of the
+    Earth relative to the equator in degrees."
+    required: false
+    type: number
+    format: double
+  longitude:
+    name: longitude
+    in: query
+    description: "Coordinate determining the position of the point on the surface of the
+    Earth relative to the zero meridian in degrees."
+    required: false
+    type: number
+    format: double
+  squareId:
+      name: squareId
+      in: path
+      description: Unique id of the sight.
+      required: true
+      type: string
+
+
+
+
